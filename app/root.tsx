@@ -1,3 +1,4 @@
+import { Link } from "@remix-run/react";
 import type { MetaFunction } from "remix";
 import {
   json,
@@ -8,11 +9,10 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData
+  useLoaderData,
 } from "remix";
-import { i18n } from "~/i18n.server";
 import { useRemixI18Next } from "remix-i18next";
-import { Link } from "@remix-run/react";
+import { i18n } from "~/i18n.server";
 
 export const meta: MetaFunction = () => {
   return { title: "New Remix App" };
@@ -22,7 +22,6 @@ export const loader: LoaderFunction = async ({ request }) => {
   let locale = await i18n.getLocale(request);
   return json({ locale });
 };
-
 
 export default function App() {
   const { locale } = useLoaderData<{ locale: string }>();
@@ -49,8 +48,8 @@ export default function App() {
   );
 }
 
-export function ErrorBoundary({ error }) {
-  console.error(error);
+export function ErrorBoundary({ error }: { error: Error }) {
+  console.log(error);
   return (
     <html>
       <head>

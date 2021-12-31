@@ -1,4 +1,3 @@
-import i18next from "i18next";
 import { renderToString } from "react-dom/server";
 import type { EntryContext } from "remix";
 import { RemixServer } from "remix";
@@ -11,10 +10,8 @@ export default async function handleRequest(
   responseHeaders: Headers,
   remixContext: EntryContext
 ) {
-  await initI18n();
-
   const markup = renderToString(
-    <RemixI18NextProvider i18n={i18next}>
+    <RemixI18NextProvider i18n={await initI18n()}>
       <RemixServer context={remixContext} url={request.url} />
     </RemixI18NextProvider>
   );
@@ -23,6 +20,6 @@ export default async function handleRequest(
 
   return new Response("<!DOCTYPE html>" + markup, {
     status: responseStatusCode,
-    headers: responseHeaders
+    headers: responseHeaders,
   });
 }
